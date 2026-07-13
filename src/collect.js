@@ -1,24 +1,16 @@
-// Run all collectors and write a combined summary.
+// Run all automated collectors, then rebuild the combined summary.
+// LinkedIn is intentionally NOT collected automatically — it is a
+// hand-curated fixture (data/linkedin-curated.json); see docs/linkedin-research.md.
 import { collectAppStore } from './collectors/appstore.js';
 import { collectGooglePlay } from './collectors/googleplay.js';
 import { collectCanny } from './collectors/canny.js';
 import { collectProductHunt } from './collectors/producthunt.js';
-import { saveJson } from './lib/store.js';
+import { collectTrustpilot } from './collectors/trustpilot.js';
 
-const appstore = await collectAppStore();
-const googleplay = await collectGooglePlay();
-const canny = await collectCanny();
-const producthunt = await collectProductHunt();
+await collectAppStore();
+await collectGooglePlay();
+await collectCanny();
+await collectProductHunt();
+await collectTrustpilot();
 
-const combined = {
-  collectedAt: new Date().toISOString(),
-  totalItems:
-    appstore.summary.total + googleplay.summary.total +
-    canny.summary.total + producthunt.summary.total,
-  appstore: appstore.summary,
-  googleplay: { app: googleplay.app, ...googleplay.summary },
-  canny: canny.summary,
-  producthunt: producthunt.summary,
-};
-const file = await saveJson('summary.json', combined);
-console.log(`\nCombined: ${combined.totalItems} items -> ${file}`);
+await import('./summarize.js');

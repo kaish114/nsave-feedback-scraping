@@ -1,0 +1,102 @@
+{
+  "source": "linkedin",
+  "method": "curated",
+  "curatedAt": "2026-07-13",
+  "note": "Hand-curated from public logged-out LinkedIn post pages (server-side rendered views). LinkedIn is not scraped by the automated pipeline: its ToS prohibit automated collection and LinkedIn actively litigates (see docs/linkedin-research.md). Comment texts were extracted from the public pages and may be truncated where LinkedIn truncated them; verify against the live URLs before quoting. Only comments visible without login are included.",
+  "companyPage": {
+    "url": "https://www.linkedin.com/company/nsavecom",
+    "followers": 18271
+  },
+  "posts": [
+    {
+      "url": "https://www.linkedin.com/posts/amer-baroudi_nsave-announcement-fintech-activity-7328409756719607809-2anX",
+      "author": "Amer Baroudi",
+      "topic": "Syria expansion teaser",
+      "text": "I've waited far too long for this moment. Tomorrow, big news from nsave 🇸🇾 🥹 — stay tuned.",
+      "reactions": 464,
+      "commentCount": 38,
+      "comments": [
+        { "author": "Zaid Kaddour", "text": "So excited !!" },
+        { "author": "Miloš M. Popović", "text": "We are tuned for years. =) Good luck, and looking forward to reading about your successes." },
+        { "author": "Alyona Trubitsyna (Orme)", "text": "Must be a very emotional moment. I've been to Damascus briefly in 2009 for a flying visit hoping to be back next year - and of course never got to go back, even this brief visit was magical. All the best!" },
+        { "author": "Tambi Jalouqa", "text": "Can't wait to invest in Syrian founders 🇸🇾 IN SYRIA!!" },
+        { "author": "Arish Omar", "text": "Excited for this news! Especially as it comes with the lifting of sanctions on Syria. 🇸🇾" },
+        { "author": "Fadi ZAKARIA, PMP", "text": "You will open accounts for Syrian 😃😃 I'm so excited to hear this news" },
+        { "author": "Brandon Pampuch", "text": "One of my favorite companies period. Excited to see what is next." }
+      ]
+    },
+    {
+      "url": "https://www.linkedin.com/posts/amer-baroudi_amazing-to-see-that-nsavehas-been-named-activity-7381022172812693504-heHn",
+      "author": "Amer Baroudi",
+      "topic": "Norrsken Impact/100 recognition",
+      "text": "Amazing to see that nsave has been named on the Norrsken Impact/100 list, recognizing the world's top 100 most impactful startups 🔥 💪 A big thank you to Norrsken for highlighting our mission and to everyone supporting us on this journey.",
+      "reactions": 167,
+      "commentCount": 8,
+      "comments": [
+        { "author": "Charalampos (Harry) Dimoulis", "text": "well deserved" },
+        { "author": "Ali Kandil", "text": "n eh? nsave" },
+        { "author": "Kazi Sazidul Hasan", "text": "Congratulations" },
+        { "author": "Kritika Sood", "text": "Amer Baroudi Émanuel Grenier-Benoit Way to go! Onwards and upwards ✨✨🚀🚀🚀" },
+        { "author": "Norrsken", "text": "👏👏👏" },
+        { "author": "Moahmed Badrawy", "text": "best of luck nsave ❣️" },
+        { "author": "Youssef Ramzy", "text": "LFGGGG" },
+        { "author": "Bhavya B.", "text": "Love your product" }
+      ]
+    },
+    {
+      "url": "https://www.linkedin.com/posts/amer-baroudi_nsave-redesigned-activity-7287555736962760704-C5vw",
+      "author": "Amer Baroudi",
+      "topic": "App redesign launch",
+      "text": "🚀 The nsave app, reimagined 🚀 💡nsave has had a makeover. We've reimagined our app to be sleeker, more intuitive, and purpose-built to simplify your financial journey. 💭 At nsave, design and product innovation are at the forefront of everything we do.",
+      "reactions": 67,
+      "commentCount": 5,
+      "comments": [
+        { "author": "Rafiq Islam", "text": "Hi Amer, been telling about nSave to my friends in Bangladesh. Unfortunately, the app doesn't seem to work here.", "signal": "availability issue (Bangladesh)" },
+        { "author": "Brandon Pampuch", "text": "Love the new look. What a clean app." },
+        { "author": "Néobanque", "text": "Kudos for the design :)" },
+        { "author": "Ibrahim Fayed", "text": "Proud of you Great news in morning" },
+        { "author": "Jon Lyndon", "text": "Looks great Amer!" }
+      ]
+    },
+    {
+      "url": "https://www.linkedin.com/posts/nsavecom_fintech-customerfirst-tech-activity-7379881113541820416-9rMS",
+      "author": "nsave",
+      "topic": "Physical card launch",
+      "text": "The new nsave cards are finally here! 🎉 To celebrate, our engineers made the first official purchase: a mountain of sweets for our users 🍬 A huge thank you to everyone who supported us from Day One. Now it's our turn! Load up your card and enjoy a sweet 0% FX on USD, GBP, and EUR 😉",
+      "reactions": 55,
+      "commentCount": 4,
+      "comments": [
+        { "author": "Amer Baroudi", "text": "🚀 James McKenzie absolute legend!" },
+        { "author": "Abdullah H.", "text": "Vertical physical card wen!", "signal": "card design request" },
+        { "author": "Ik Iroche", "text": "Landmark moment! Congratulations Amer and team 👊" },
+        { "author": "Joy Laoun", "text": "Mabrouk 👏 🙌 Amer Baroudi!!" }
+      ]
+    },
+    {
+      "url": "https://www.linkedin.com/posts/amer-baroudi_careers-nsave-activity-7382457932774539264-7Sa2",
+      "author": "Amer Baroudi",
+      "topic": "Designer hiring post",
+      "text": "We are looking for an exceptional young designer to join nsave. Come work with the legendary Jonas Auernhammer 🔥",
+      "reactions": 57,
+      "commentCount": 4,
+      "comments": [
+        { "author": "Muhammad Sherbeeny", "text": "Hey Amer. Please send an update email regarding the cards waitlist final ranks. i have invited many people and followed up with them for onboarding...", "signal": "card waitlist / referral friction" },
+        { "author": "Abdullah H.", "text": "Kindly bring physical card but with vertical orientation. With your red bg and logo it will look something premium.", "signal": "card design request" },
+        { "author": "Thilo Konzok", "text": "Dream team ❤️" },
+        { "author": "Priyanka Srivastav", "text": "Love the clarity here and the 1:1 mentorship offer. Not a designer myself, but sounds like a really cool gig for someone wanting to grow in a real team..." }
+      ]
+    },
+    {
+      "url": "https://www.linkedin.com/posts/aabuhash_nsave-is-the-best-group-of-people-i-have-activity-7266877240850747392-rAuG",
+      "author": "Abdallah AbuHashem",
+      "topic": "Team / hiring",
+      "text": "nsave is the best group of people i have worked with. we are changing the way people from distressed economies bank, giving them the same experience that everyone in the west has. this requires creative solutions and pushing the boundaries every round of hiring we have done has raised the bar...",
+      "reactions": 88,
+      "commentCount": 2,
+      "comments": [
+        { "author": "Abdallah AbuHashem", "text": "Engineering positions: https://www.ycombinator.com/companies/nsave/jobs Ops role: https://www.linkedin.com/jobs/view/4081283613" },
+        { "author": "Bosco Domingo", "text": "Congrats!! Hope you'll keep growing 💪🏻💪🏻" }
+      ]
+    }
+  ]
+}

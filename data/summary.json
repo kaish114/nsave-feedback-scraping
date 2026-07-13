@@ -1,66 +1,134 @@
 {
-  "collectedAt": "2026-07-13T00:54:35.794Z",
-  "totalReviews": 902,
-  "appstore": {
-    "total": 482,
-    "avgRating": 3.8,
-    "byRating": {
-      "1": 124,
-      "2": 13,
-      "3": 9,
-      "4": 27,
-      "5": 309
+  "generatedAt": "2026-07-13T05:28:38.051Z",
+  "surfaces": {
+    "appstore": {
+      "collectedAt": "2026-07-13T00:54:19.117Z",
+      "total": 482,
+      "avgRating": 3.8,
+      "byRating": {
+        "1": 124,
+        "2": 13,
+        "3": 9,
+        "4": 27,
+        "5": 309
+      },
+      "byCountry": {
+        "us": 158,
+        "gb": 47,
+        "ae": 11,
+        "bh": 1,
+        "dz": 8,
+        "eg": 82,
+        "jo": 3,
+        "kw": 1,
+        "ma": 6,
+        "ng": 39,
+        "om": 1,
+        "pk": 111,
+        "qa": 1,
+        "sa": 4,
+        "tr": 9
+      }
     },
-    "byCountry": {
-      "us": 158,
-      "gb": 47,
-      "ae": 11,
-      "bh": 1,
-      "dz": 8,
-      "eg": 82,
-      "jo": 3,
-      "kw": 1,
-      "ma": 6,
-      "ng": 39,
-      "om": 1,
-      "pk": 111,
-      "qa": 1,
-      "sa": 4,
-      "tr": 9
+    "googleplay": {
+      "collectedAt": "2026-07-13T00:54:35.790Z",
+      "app": {
+        "title": "nsave: Global USD Accounts",
+        "score": 4.39,
+        "ratings": 4583,
+        "reviews": 211,
+        "installs": "500,000+",
+        "histogram": {
+          "1": 588,
+          "2": 0,
+          "3": 135,
+          "4": 135,
+          "5": 3711
+        },
+        "updated": 1783507009000,
+        "version": "2.2.8"
+      },
+      "total": 420,
+      "avgRating": 3.62,
+      "byRating": {
+        "1": 120,
+        "2": 10,
+        "3": 23,
+        "4": 25,
+        "5": 242
+      },
+      "byCountry": {
+        "us": 200,
+        "eg": 169,
+        "bd": 6,
+        "tr": 1,
+        "ma": 44
+      }
+    },
+    "canny": {
+      "collectedAt": "2026-07-13T01:05:48.570Z",
+      "total": 214,
+      "expected": 215,
+      "byStatus": {
+        "planned": 2,
+        "open": 210,
+        "in progress": 2
+      },
+      "totalVotes": 1193
+    },
+    "producthunt": {
+      "collectedAt": "2026-07-13T01:09:53.901Z",
+      "total": 8,
+      "siteReported": {
+        "avg": 3,
+        "count": 9
+      },
+      "avgRating": 3.25
+    },
+    "trustpilot": {
+      "collectedAt": "2026-07-13T05:26:15.608Z",
+      "total": 140,
+      "avgRating": 3.49,
+      "byRating": {
+        "1": 47,
+        "2": 3,
+        "3": 4,
+        "4": 7,
+        "5": 79
+      },
+      "byCountry": {
+        "pk": 25,
+        "bd": 34,
+        "eg": 34,
+        "us": 4,
+        "gb": 8,
+        "sa": 1,
+        "it": 1,
+        "dz": 9,
+        "fr": 1,
+        "ma": 4,
+        "tr": 2,
+        "ng": 8,
+        "nl": 1,
+        "lb": 2,
+        "uy": 1,
+        "tn": 1,
+        "de": 1,
+        "ca": 1,
+        "br": 1,
+        "ie": 1
+      },
+      "site": {
+        "totalReported": 140,
+        "trustScore": 3.3
+      }
+    },
+    "linkedin": {
+      "method": "curated",
+      "curatedAt": "2026-07-13",
+      "posts": 6,
+      "comments": 30
     }
   },
-  "googleplay": {
-    "app": {
-      "title": "nsave: Global USD Accounts",
-      "score": 4.39,
-      "ratings": 4583,
-      "reviews": 211,
-      "installs": "500,000+",
-      "histogram": {
-        "1": 588,
-        "2": 0,
-        "3": 135,
-        "4": 135,
-        "5": 3711
-      },
-      "updated": 1783507009000,
-      "version": "2.2.8"
-    },
-    "total": 420,
-    "avgRating": 3.62,
-    "byRating": {
-      "1": 120,
-      "2": 10,
-      "3": 23,
-      "4": 25,
-      "5": 242
-    },
-    "byCountry": {
-      "us": 200,
-      "eg": 169,
-      "bd": 6,
-      "tr": 1,
-      "ma": 44
-    }
-  }
+  "totalItems": 1294
 }

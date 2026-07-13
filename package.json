@@ -12,7 +12,9 @@
     "collect:appstore": "node src/collectors/appstore.js",
     "collect:googleplay": "node src/collectors/googleplay.js",
     "collect:canny": "node src/collectors/canny.js",
-    "collect:producthunt": "node src/collectors/producthunt.js"
+    "collect:producthunt": "node src/collectors/producthunt.js",
+    "collect:trustpilot": "node src/collectors/trustpilot.js",
+    "summarize": "node src/summarize.js"
   },
   "repository": {
     "type": "git",

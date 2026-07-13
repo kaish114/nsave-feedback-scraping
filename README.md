@@ -24,6 +24,8 @@ npm run collect:appstore    # App Store only (17 storefronts, iTunes RSS)
 npm run collect:googleplay  # Google Play only (10 lang/country locales)
 npm run collect:canny       # Canny wishlist board (headless Chromium)
 npm run collect:producthunt # Product Hunt reviews (headless Chromium)
+npm run collect:trustpilot  # Trustpilot reviews (headless Chromium, demo-only)
+npm run summarize           # rebuild data/summary.json from files on disk
 ```
 
 Output lands in `data/` as JSON with a normalized review schema
@@ -38,6 +40,9 @@ plus per-source summaries (`data/summary.json`). Collectors are proxy-aware
 - Written-review averages sit well below the star-rating averages on both stores — text reviews skew toward complaints (1★ is the second-largest bucket on both).
 - **Canny:** 214 of 215 wishlist posts captured (1,193 votes). Statuses: 210 open, 2 planned, 2 in progress. Top asks: Apple/Google Pay (104 votes, planned), payment links (85), physical card (83), EUR/SEPA accounts (67), more currencies (52).
 - **Product Hunt:** 8 of the site's 9 reviews captured, 3.0 site average — polarized between mission-driven 5★ and account-freeze/support 1★ complaints.
+- **Trustpilot:** all 140 reviews captured (TrustScore 3.3, up from 110 reviews when first surveyed). Heavily polarized: 79×5★ vs 47×1★. Top countries: bd 34, eg 34, pk 25. Demo-only — production needs the paid Business API.
+- **LinkedIn (curated):** 6 high-engagement posts, 30 public comments in `data/linkedin-curated.json`. Not automated by design (ToS + litigation risk — see docs/linkedin-research.md). Product signal found: card waitlist friction, vertical-card design requests, Bangladesh availability complaint.
+- **Total: ~1,294 feedback items across 6 surfaces.**
 
 ### Browser-based collectors
 
