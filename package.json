@@ -14,7 +14,8 @@
     "collect:canny": "node src/collectors/canny.js",
     "collect:producthunt": "node src/collectors/producthunt.js",
     "collect:trustpilot": "node src/collectors/trustpilot.js",
-    "summarize": "node src/summarize.js"
+    "summarize": "node src/summarize.js",
+    "dashboard": "node src/dashboard/server.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,8 @@
   "homepage": "https://github.com/kaish114/nsave-feedback-scraping#readme",
   "type": "module",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.111.0",
+    "express": "^5.2.1",
     "google-play-scraper": "^10.1.3",
     "hpagent": "^1.2.0",
     "playwright-core": "^1.61.1",

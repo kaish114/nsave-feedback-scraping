@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>nsave — Feedback Intelligence</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232a78d6'/%3E%3Ctext x='16' y='23' font-size='20' font-family='sans-serif' font-weight='700' fill='white' text-anchor='middle'%3En%3C/text%3E%3C/svg%3E" />
+  <style>
+    /* ---------- Material Design 3 tokens ---------- */
+    :root {
+      --md-primary:#2a78d6; --md-on-primary:#ffffff;
+      --md-primary-container:#d7e6fb; --md-on-primary-container:#0a2744;
+      --md-surface:#fbfcfd; --md-surface-container-lowest:#ffffff;
+      --md-surface-container:#eef1f6; --md-surface-container-high:#e7ebf1;
+      --md-on-surface:#1a1c1e; --md-on-surface-variant:#43474e;
+      --md-outline:#73777f; --md-outline-variant:#c8ccd4;
+      --md-shadow:rgba(10,20,40,.14);
+      /* data-viz roles */
+      --surface-1:#fbfcfd; --text-primary:#1a1c1e; --text-secondary:#43474e; --text-muted:#73777f;
+      --series-1:#2a78d6; --series-2:#1baf7a;
+      --rate-1:#d03b3b; --rate-2:#ec835a; --rate-3:#9aa0a6; --rate-4:#6da7ec; --rate-5:#2a78d6;
+      --good:#0ca30c; --warning:#c98500; --critical:#d03b3b;
+      --seq-100:#cde2fb; --seq-250:#86b6ef; --seq-400:#3987e5; --seq-550:#1c5cab;
+    }
+    :root[data-theme="dark"] {
+      --md-primary:#a6c8ff; --md-on-primary:#00325a;
+      --md-primary-container:#204876; --md-on-primary-container:#d4e3ff;
+      --md-surface:#131417; --md-surface-container-lowest:#0d0e10;
+      --md-surface-container:#1e2023; --md-surface-container-high:#282a2e;
+      --md-on-surface:#e3e2e6; --md-on-surface-variant:#c3c7cf;
+      --md-outline:#8d9199; --md-outline-variant:#43474e;
+      --md-shadow:rgba(0,0,0,.5);
+      --surface-1:#1e2023; --text-primary:#e3e2e6; --text-secondary:#c3c7cf; --text-muted:#8d9199;
+      --series-1:#3987e5; --series-2:#199e70;
+      --rate-1:#e66767; --rate-2:#ec835a; --rate-3:#8d9199; --rate-4:#5598e7; --rate-5:#3987e5;
+      --good:#3ec93e; --warning:#eda100; --critical:#e66767;
+      --seq-100:#184f95; --seq-250:#256abf; --seq-400:#3987e5; --seq-550:#86b6ef;
+    }
+    @media (prefers-color-scheme:dark){ :root:not([data-theme]){ color-scheme:dark; } }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0; background:var(--md-surface); color:var(--md-on-surface);
+      font-family:"Roboto","Segoe UI",system-ui,-apple-system,sans-serif;
+      -webkit-font-smoothing:antialiased; transition:background .25s,color .25s;
+    }
+    h1,h2,h3{ margin:0; font-weight:500; letter-spacing:.1px; }
+    a{ color:var(--md-primary); }
+
+    /* Top app bar */
+    .appbar{
+      position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:16px;
+      padding:14px 24px; background:var(--md-surface-container);
+      border-bottom:1px solid var(--md-outline-variant);
+    }
+    .appbar .logo{
+      width:36px; height:36px; border-radius:10px; flex:0 0 auto;
+      background:linear-gradient(135deg,var(--md-primary),var(--series-2));
+      display:grid; place-items:center; color:var(--md-on-primary); font-weight:700; font-size:18px;
+    }
+    .appbar .titles{ display:flex; flex-direction:column; line-height:1.25; }
+    .appbar .titles h1{ font-size:19px; }
+    .appbar .titles span{ font-size:12.5px; color:var(--md-on-surface-variant); }
+    .appbar .spacer{ flex:1; }
+    .icon-btn{
+      appearance:none; border:none; cursor:pointer; width:40px; height:40px; border-radius:50%;
+      background:transparent; color:var(--md-on-surface-variant); font-size:20px;
+      display:grid; place-items:center; transition:background .2s;
+    }
+    .icon-btn:hover{ background:var(--md-surface-container-high); }
+
+    main{ max-width:1200px; margin:0 auto; padding:24px; }
+    .section-title{ font-size:14px; text-transform:uppercase; letter-spacing:.8px;
+      color:var(--md-on-surface-variant); margin:28px 4px 12px; }
+
+    /* Cards */
+    .card{
+      background:var(--md-surface-container-lowest); border:1px solid var(--md-outline-variant);
+      border-radius:20px; padding:20px; box-shadow:0 1px 2px var(--md-shadow);
+    }
+    .grid{ display:grid; gap:16px; }
+    .kpis{ grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); }
+    .kpi .label{ font-size:12.5px; color:var(--md-on-surface-variant); text-transform:uppercase; letter-spacing:.5px; }
+    .kpi .value{ font-size:34px; font-weight:500; margin-top:6px; line-height:1; }
+    .kpi .sub{ font-size:12.5px; color:var(--md-on-surface-variant); margin-top:8px; }
+    .kpi .value .unit{ font-size:16px; color:var(--md-on-surface-variant); font-weight:400; margin-left:4px; }
+
+    .cols{ grid-template-columns:1fr 1fr; }
+    @media (max-width:820px){ .cols{ grid-template-columns:1fr; } }
+    .card h3{ font-size:16px; margin-bottom:4px; }
+    .card .hint{ font-size:12.5px; color:var(--md-on-surface-variant); margin-bottom:16px; }
+
+    /* Charts */
+    .bar-row{ display:grid; grid-template-columns:120px 1fr 52px; align-items:center; gap:12px; margin:9px 0; }
+    .bar-row .cat{ font-size:13px; color:var(--text-secondary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .bar-track{ background:var(--md-surface-container); border-radius:6px; height:22px; overflow:hidden; }
+    .bar-fill{ height:100%; border-radius:6px; transition:width .6s cubic-bezier(.2,.7,.3,1); }
+    .bar-row .num{ font-size:13px; font-variant-numeric:tabular-nums; text-align:right; color:var(--text-primary); font-weight:500; }
+    .rating-row .cat{ display:flex; align-items:center; gap:6px; }
+    .star{ color:var(--warning); }
+
+    /* Sentiment segmented bar */
+    .seg{ display:flex; height:34px; border-radius:10px; overflow:hidden; margin:6px 0 14px; }
+    .seg span{ display:grid; place-items:center; color:#fff; font-size:12.5px; font-weight:600;
+      min-width:34px; }
+    .seg-legend{ display:flex; gap:18px; flex-wrap:wrap; font-size:12.5px; color:var(--text-secondary); }
+    .seg-legend i{ width:11px; height:11px; border-radius:3px; display:inline-block; margin-right:6px; vertical-align:-1px; }
+
+    /* Canny list */
+    .canny-item{ display:flex; align-items:center; gap:12px; padding:9px 0; border-bottom:1px solid var(--md-outline-variant); }
+    .canny-item:last-child{ border-bottom:none; }
+    .canny-votes{ flex:0 0 auto; min-width:46px; text-align:center; font-weight:600; font-variant-numeric:tabular-nums;
+      background:var(--md-primary-container); color:var(--md-on-primary-container); border-radius:8px; padding:5px 8px; font-size:13px; }
+    .canny-title{ flex:1; font-size:14px; }
+    .chip{ font-size:11px; padding:3px 9px; border-radius:20px; text-transform:capitalize; font-weight:600; }
+    .chip.open{ background:var(--md-surface-container-high); color:var(--md-on-surface-variant); }
+    .chip.planned{ background:var(--md-primary-container); color:var(--md-on-primary-container); }
+    .chip.progress{ background:color-mix(in srgb,var(--good) 22%,transparent); color:var(--good); }
+
+    /* AI panel */
+    .ai-card{ background:
+        radial-gradient(120% 140% at 100% 0%, color-mix(in srgb,var(--md-primary) 10%,transparent), transparent 60%),
+        var(--md-surface-container-lowest); }
+    .ai-head{ display:flex; align-items:center; gap:10px; margin-bottom:4px; }
+    .ai-badge{ font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase;
+      color:var(--md-on-primary); background:var(--md-primary); padding:3px 9px; border-radius:20px; }
+    .ai-summary{ font-size:14px; line-height:1.62; }
+    .ai-summary h3{ font-size:14px; margin:18px 0 6px; color:var(--md-primary); }
+    .ai-summary h3:first-child{ margin-top:6px; }
+    .ai-summary ul{ margin:4px 0 4px; padding-left:20px; }
+    .ai-summary li{ margin:4px 0; }
+    .ai-summary p{ margin:6px 0; }
+    .ai-summary strong{ font-weight:600; }
+
+    .ask{ display:flex; gap:10px; margin-top:16px; }
+    .ask input{
+      flex:1; background:var(--md-surface-container); border:1px solid var(--md-outline-variant);
+      color:var(--md-on-surface); border-radius:26px; padding:13px 18px; font-size:14px; font-family:inherit;
+    }
+    .ask input:focus{ outline:2px solid var(--md-primary); border-color:transparent; }
+    .btn{
+      appearance:none; border:none; cursor:pointer; font-family:inherit; font-weight:600; font-size:14px;
+      background:var(--md-primary); color:var(--md-on-primary); border-radius:26px; padding:0 22px;
+      transition:filter .2s, opacity .2s;
+    }
+    .btn:hover{ filter:brightness(1.06); }
+    .btn:disabled{ opacity:.5; cursor:default; }
+    .suggested{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+    .suggested button{
+      appearance:none; cursor:pointer; font-family:inherit; font-size:12.5px;
+      background:transparent; color:var(--md-on-surface-variant);
+      border:1px solid var(--md-outline-variant); border-radius:20px; padding:7px 13px; transition:background .2s;
+    }
+    .suggested button:hover{ background:var(--md-surface-container); }
+    .answer{ margin-top:16px; padding:16px; border-radius:14px; background:var(--md-surface-container);
+      font-size:14px; line-height:1.6; white-space:pre-wrap; display:none; }
+    .answer.show{ display:block; }
+    .notice{ font-size:13px; color:var(--md-on-surface-variant); background:var(--md-surface-container);
+      border:1px dashed var(--md-outline-variant); border-radius:12px; padding:14px 16px; }
+    .spinner{ display:inline-block; width:16px; height:16px; border:2px solid currentColor; border-top-color:transparent;
+      border-radius:50%; animation:spin .8s linear infinite; vertical-align:-3px; }
+    @keyframes spin{ to{ transform:rotate(360deg); } }
+    .muted{ color:var(--md-on-surface-variant); }
+    footer{ text-align:center; font-size:12px; color:var(--md-on-surface-variant); padding:32px 0 12px; }
+  </style>
+</head>
+<body>
+  <header class="appbar">
+    <div class="logo">n</div>
+    <div class="titles">
+      <h1>nsave · Feedback Intelligence</h1>
+      <span id="subtitle">Loading…</span>
+    </div>
+    <div class="spacer"></div>
+    <button class="icon-btn" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">◐</button>
+  </header>
+
+  <main>
+    <div class="grid kpis" id="kpis"></div>
+
+    <div class="section-title">AI analysis</div>
+    <div class="card ai-card">
+      <div class="ai-head">
+        <span class="ai-badge">✦ Claude</span>
+        <h3>Executive summary</h3>
+      </div>
+      <div class="hint">Generated from the collected feedback across all surfaces.</div>
+      <div id="ai-summary" class="ai-summary"></div>
+      <div class="ask">
+        <input id="ask-input" type="text" placeholder="Ask about the feedback… e.g. what do Egyptian users complain about?" />
+        <button class="btn" id="ask-btn">Ask</button>
+      </div>
+      <div class="suggested" id="suggested"></div>
+      <div class="answer" id="answer"></div>
+    </div>
+
+    <div class="section-title">Ratings &amp; sentiment</div>
+    <div class="grid cols">
+      <div class="card">
+        <h3>Rating distribution</h3>
+        <div class="hint">All written reviews across App Store, Google Play, Trustpilot &amp; Product Hunt.</div>
+        <div id="rating-chart"></div>
+      </div>
+      <div class="card">
+        <h3>Sentiment split</h3>
+        <div class="hint">By star rating: 1–2★ negative, 3★ neutral, 4–5★ positive.</div>
+        <div id="sentiment-chart"></div>
+      </div>
+    </div>
+
+    <div class="section-title">Where feedback comes from</div>
+    <div class="grid cols">
+      <div class="card">
+        <h3>Volume by surface</h3>
+        <div class="hint">Number of collected items per feedback surface.</div>
+        <div id="surface-chart"></div>
+      </div>
+      <div class="card">
+        <h3>Top countries</h3>
+        <div class="hint">Review volume by storefront country (top 10).</div>
+        <div id="country-chart"></div>
+      </div>
+    </div>
+
+    <div class="section-title">Most-wanted features (Canny wishlist)</div>
+    <div class="card">
+      <div class="hint" id="canny-hint"></div>
+      <div id="canny-list"></div>
+    </div>
+
+    <footer>nsave public feedback — demo dashboard · data collected by the scraping pipeline</footer>
+  </main>
+
+  <script>
+    const $ = (s) => document.querySelector(s);
+    const esc = (s) => (s||'').replace(/[&<>]/g, (c)=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+    // ---------- theme ----------
+    const root = document.documentElement;
+    (function initTheme(){
+      const saved = localStorage.getItem('theme');
+      if (saved) root.setAttribute('data-theme', saved);
+      else if (window.matchMedia('(prefers-color-scheme:dark)').matches) root.setAttribute('data-theme','dark');
+    })();
+    $('#theme-toggle').onclick = () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next); localStorage.setItem('theme', next);
+    };
+
+    // ---------- chart helpers (hand-built bars, always labelled) ----------
+    function barRows(el, rows, colorFn, catFn){
+      const max = Math.max(...rows.map(r=>r.count), 1);
+      el.innerHTML = rows.map((r,i)=>{
+        const pct = Math.max((r.count/max)*100, 2);
+        return `<div class="bar-row ${r.ratingRow?'rating-row':''}">
+          <div class="cat">${catFn(r,i)}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:0%;background:${colorFn(r,i)}" data-w="${pct}"></div></div>
+          <div class="num">${r.count.toLocaleString()}</div>
+        </div>`;
+      }).join('');
+      requestAnimationFrame(()=> el.querySelectorAll('.bar-fill').forEach(f=> f.style.width=f.dataset.w+'%'));
+    }
+    const seqColor = (i,n) => { const ramp=['var(--seq-550)','var(--seq-400)','var(--seq-250)','var(--seq-100)'];
+      return ramp[Math.min(Math.floor(i/Math.max(1,n/ramp.length)),ramp.length-1)]; };
+
+    // ---------- render ----------
+    async function load(){
+      const data = await (await fetch('/api/data')).json();
+      const k = data.kpis;
+      $('#subtitle').textContent =
+        `${k.totalItems.toLocaleString()} feedback items · ${data.bySurface.length + 2} surfaces · updated ${new Date(data.generatedAt).toLocaleDateString()}`;
+
+      // KPIs
+      const kpis = [
+        { label:'Total feedback items', value:k.totalItems.toLocaleString(), sub:`${k.totalReviews.toLocaleString()} written reviews` },
+        { label:'Avg written rating', value:k.avgRating, unit:'/5', sub:`Google Play listing ${k.googlePlayScore}/5` },
+        { label:'Negative reviews', value:k.negativePct, unit:'%', sub:'share rated 1–2★' },
+        { label:'Play Store installs', value:k.googlePlayInstalls||'—', sub:`${(k.googlePlayRatings||0).toLocaleString()} ratings` },
+        { label:'Trustpilot', value:data.trustScore??'—', unit:'/5', sub:'TrustScore' },
+      ];
+      $('#kpis').innerHTML = kpis.map(c=>`<div class="card kpi">
+        <div class="label">${c.label}</div>
+        <div class="value">${c.value}${c.unit?`<span class="unit">${c.unit}</span>`:''}</div>
+        <div class="sub">${c.sub}</div></div>`).join('');
+
+      // Rating distribution (diverging red→blue by star)
+      const rateColors = ['var(--rate-1)','var(--rate-2)','var(--rate-3)','var(--rate-4)','var(--rate-5)'];
+      barRows($('#rating-chart'),
+        data.ratingDistribution.map(r=>({ ...r, ratingRow:true })),
+        (r)=> rateColors[r.rating-1],
+        (r)=> `${r.rating} <span class="star">★</span>`);
+
+      // Sentiment segmented bar
+      const s = data.sentiment, tot = s.positive+s.neutral+s.negative || 1;
+      const segs = [
+        { k:'Positive', v:s.positive, c:'var(--good)' },
+        { k:'Neutral',  v:s.neutral,  c:'var(--rate-3)' },
+        { k:'Negative', v:s.negative, c:'var(--critical)' },
+      ];
+      $('#sentiment-chart').innerHTML =
+        `<div class="seg">${segs.map(g=>{ const p=(g.v/tot)*100;
+          return `<span style="width:${p}%;background:${g.c}" title="${g.k}: ${g.v}">${p>7?Math.round(p)+'%':''}</span>`; }).join('')}</div>
+         <div class="seg-legend">${segs.map(g=>`<span><i style="background:${g.c}"></i>${g.k} · ${g.v.toLocaleString()} (${Math.round(g.v/tot*100)}%)</span>`).join('')}</div>`;
+
+      // Volume by surface
+      const surf = data.bySurface;
+      barRows($('#surface-chart'), surf, (r,i)=>seqColor(i,surf.length), (r)=>esc(r.label));
+
+      // Top countries
+      const c = data.topCountries;
+      barRows($('#country-chart'), c, (r,i)=>seqColor(i,c.length), (r)=>esc(r.name));
+
+      // Canny
+      if (data.cannySummary) {
+        $('#canny-hint').textContent =
+          `${data.cannySummary.total} wishlist posts · ${data.cannySummary.totalVotes.toLocaleString()} votes · ${data.cannySummary.byStatus.planned||0} planned, ${data.cannySummary.byStatus['in progress']||0} in progress`;
+      }
+      $('#canny-list').innerHTML = data.cannyTop.map(p=>{
+        const cls = p.status==='planned'?'planned':p.status==='in progress'?'progress':'open';
+        return `<div class="canny-item">
+          <span class="canny-votes">▲ ${p.votes}</span>
+          <span class="canny-title">${esc(p.title)}</span>
+          <span class="chip ${cls}">${esc(p.status)}</span></div>`;
+      }).join('');
+
+      // AI
+      setupAI(data.aiEnabled);
+    }
+
+    // ---------- AI ----------
+    function mdToHtml(md){
+      const lines = md.split('\n'); let html=''; let inList=false;
+      const inline = (t)=> esc(t).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+      for (const raw of lines){
+        const line = raw.trimEnd();
+        if (/^#{2,3}\s/.test(line)){ if(inList){html+='</ul>';inList=false;} html+=`<h3>${inline(line.replace(/^#{2,3}\s/,''))}</h3>`; }
+        else if (/^[-*]\s/.test(line)){ if(!inList){html+='<ul>';inList=true;} html+=`<li>${inline(line.replace(/^[-*]\s/,''))}</li>`; }
+        else if (line===''){ if(inList){html+='</ul>';inList=false;} }
+        else { if(inList){html+='</ul>';inList=false;} html+=`<p>${inline(line)}</p>`; }
+      }
+      if(inList) html+='</ul>';
+      return html;
+    }
+
+    function setupAI(enabled){
+      const summaryEl = $('#ai-summary'), answerEl = $('#answer'),
+            input = $('#ask-input'), btn = $('#ask-btn');
+      if (!enabled){
+        summaryEl.innerHTML = `<div class="notice">AI features are turned off. Start the server with an <code>ANTHROPIC_API_KEY</code> set to generate a live executive summary and answer questions about the feedback.</div>`;
+        input.disabled = true; btn.disabled = true; input.placeholder = 'AI disabled — set ANTHROPIC_API_KEY';
+        return;
+      }
+      summaryEl.innerHTML = `<span class="muted"><span class="spinner"></span> Analysing feedback…</span>`;
+      fetch('/api/summary').then(r=>r.json()).then(d=>{
+        summaryEl.innerHTML = d.summary ? mdToHtml(d.summary)
+          : `<div class="notice">${esc(d.error||'Could not generate summary.')}</div>`;
+      }).catch(()=> summaryEl.innerHTML = `<div class="notice">Failed to load summary.</div>`);
+
+      const suggestions = [
+        'What are the top 3 things to fix first?',
+        'What do Egyptian and Pakistani users say?',
+        'Why do users give 1-star reviews?',
+        'What do people love about nsave?',
+      ];
+      $('#suggested').innerHTML = suggestions.map(q=>`<button>${esc(q)}</button>`).join('');
+      $('#suggested').querySelectorAll('button').forEach(b=> b.onclick=()=>{ input.value=b.textContent; ask(); });
+
+      async function ask(){
+        const q = input.value.trim(); if(!q) return;
+        btn.disabled = true; answerEl.className='answer show';
+        answerEl.innerHTML = `<span class="muted"><span class="spinner"></span> Thinking…</span>`;
+        try{
+          const r = await fetch('/api/ask',{ method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({question:q}) });
+          const d = await r.json();
+          answerEl.innerHTML = d.answer ? mdToHtml(d.answer) : `<span class="muted">${esc(d.error||'No answer.')}</span>`;
+        }catch{ answerEl.innerHTML = '<span class="muted">Request failed.</span>'; }
+        finally{ btn.disabled=false; }
+      }
+      btn.onclick = ask;
+      input.addEventListener('keydown', e=>{ if(e.key==='Enter') ask(); });
+    }
+
+    load().catch(e=> $('#subtitle').textContent = 'Failed to load data: '+e.message);
+  </script>
+</body>
+</html>

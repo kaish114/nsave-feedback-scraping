@@ -61,6 +61,39 @@ ClientHello; certificate verification remains enabled.
 2. **Stage 2 (hours 8–16):** Canny wishlist posts via Playwright; Product Hunt reviews.
 3. **Stage 3 (hours 16–24):** Trustpilot (polite, demo-only), YouTube comments, curated LinkedIn fixture.
 
+## Dashboard (Material Design 3 + AI)
+
+A small Express dashboard visualizes the collected data and integrates Claude for
+analysis.
+
+```bash
+npm install
+npm run collect          # populate data/ (or use the committed snapshots)
+export ANTHROPIC_API_KEY=sk-ant-...   # optional — enables the AI features
+npm run dashboard        # http://localhost:3000
+```
+
+- **Material Design 3 UI** — MD3 color/elevation/shape tokens, light + dark themes
+  (dark is a properly stepped theme, not an inverted flip), responsive layout.
+- **Charts** are hand-built SVG/CSS bars using a CVD-validated palette, every bar
+  directly labelled: rating distribution (diverging red→blue), sentiment split,
+  volume by surface and by country (sequential ramp), and the Canny wishlist.
+- **AI integration (Claude)** — an `ANTHROPIC_API_KEY` unlocks two features backed
+  by `claude-opus-4-8`:
+  - an **executive summary** of the feedback (headline, top complaints, praise,
+    most-wanted features, recommended focus), and
+  - a grounded **Q&A box** — ask a question and Claude answers from the collected
+    reviews, naming the surfaces behind each point.
+
+  Both are grounded in a compact corpus sampled from the data (negative/positive
+  reviews, Canny asks, LinkedIn comments) plus the aggregate stats. Without a key
+  the dashboard still runs fully — the charts and KPIs render, and the AI panel
+  shows a clear "set ANTHROPIC_API_KEY" notice.
+
+Architecture: `src/dashboard/aggregate.js` (reads `data/`, builds chart aggregates
+and the AI corpus), `src/dashboard/ai.js` (Anthropic SDK calls), `src/dashboard/server.js`
+(`/api/data`, `/api/summary`, `/api/ask`), `src/dashboard/public/index.html` (the SPA).
+
 ## Docs
 
 - [LinkedIn feedback-surface research](docs/linkedin-research.md)
