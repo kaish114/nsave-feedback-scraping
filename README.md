@@ -22,6 +22,8 @@ npm install
 npm run collect             # both collectors + combined summary
 npm run collect:appstore    # App Store only (17 storefronts, iTunes RSS)
 npm run collect:googleplay  # Google Play only (10 lang/country locales)
+npm run collect:canny       # Canny wishlist board (headless Chromium)
+npm run collect:producthunt # Product Hunt reviews (headless Chromium)
 ```
 
 Output lands in `data/` as JSON with a normalized review schema
@@ -34,6 +36,19 @@ plus per-source summaries (`data/summary.json`). Collectors are proxy-aware
 - **App Store:** 482 unique written reviews across 17 storefronts (top: us 158, pk 111, eg 82, gb 47, ng 39), avg 3.8.
 - **Google Play:** 420 unique written reviews across en/ar/bn/tr/fr locales, avg 3.62; listing shows score 4.39 from 4,583 ratings, 500,000+ installs.
 - Written-review averages sit well below the star-rating averages on both stores — text reviews skew toward complaints (1★ is the second-largest bucket on both).
+- **Canny:** 214 of 215 wishlist posts captured (1,193 votes). Statuses: 210 open, 2 planned, 2 in progress. Top asks: Apple/Google Pay (104 votes, planned), payment links (85), physical card (83), EUR/SEPA accounts (67), more currencies (52).
+- **Product Hunt:** 8 of the site's 9 reviews captured, 3.0 site average — polarized between mission-driven 5★ and account-freeze/support 1★ complaints.
+
+### Browser-based collectors
+
+Canny and Product Hunt are client-side rendered (Product Hunt is also
+Cloudflare-fronted), so those collectors drive headless Chromium via
+`playwright-core` (`CHROMIUM_PATH` env overrides the default
+`/opt/pw-browsers/chromium`). The Canny collector intercepts the SPA's own
+`/api/posts/get` responses rather than parsing the DOM. Behind an
+intercepting HTTPS proxy the browser hop is capped at TLS 1.2
+(`--ssl-version-max=tls1.2`) because the proxy resets Chromium's TLS 1.3
+ClientHello; certificate verification remains enabled.
 
 ## Plan
 
