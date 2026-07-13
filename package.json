@@ -1,0 +1,32 @@
+{
+  "name": "nsave-feedback-scraping",
+  "version": "1.0.0",
+  "description": "Scraping intelligence and demo collectors for nsave's public feedback surfaces.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "collect": "node src/collect.js",
+    "collect:appstore": "node src/collectors/appstore.js",
+    "collect:googleplay": "node src/collectors/googleplay.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaish114/nsave-feedback-scraping.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kaish114/nsave-feedback-scraping/issues"
+  },
+  "homepage": "https://github.com/kaish114/nsave-feedback-scraping#readme",
+  "type": "module",
+  "dependencies": {
+    "google-play-scraper": "^10.1.3",
+    "hpagent": "^1.2.0",
+    "undici": "^8.7.0"
+  }
+}

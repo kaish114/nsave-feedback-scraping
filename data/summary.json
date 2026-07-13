@@ -1,0 +1,66 @@
+{
+  "collectedAt": "2026-07-13T00:54:35.794Z",
+  "totalReviews": 902,
+  "appstore": {
+    "total": 482,
+    "avgRating": 3.8,
+    "byRating": {
+      "1": 124,
+      "2": 13,
+      "3": 9,
+      "4": 27,
+      "5": 309
+    },
+    "byCountry": {
+      "us": 158,
+      "gb": 47,
+      "ae": 11,
+      "bh": 1,
+      "dz": 8,
+      "eg": 82,
+      "jo": 3,
+      "kw": 1,
+      "ma": 6,
+      "ng": 39,
+      "om": 1,
+      "pk": 111,
+      "qa": 1,
+      "sa": 4,
+      "tr": 9
+    }
+  },
+  "googleplay": {
+    "app": {
+      "title": "nsave: Global USD Accounts",
+      "score": 4.39,
+      "ratings": 4583,
+      "reviews": 211,
+      "installs": "500,000+",
+      "histogram": {
+        "1": 588,
+        "2": 0,
+        "3": 135,
+        "4": 135,
+        "5": 3711
+      },
+      "updated": 1783507009000,
+      "version": "2.2.8"
+    },
+    "total": 420,
+    "avgRating": 3.62,
+    "byRating": {
+      "1": 120,
+      "2": 10,
+      "3": 23,
+      "4": 25,
+      "5": 242
+    },
+    "byCountry": {
+      "us": 200,
+      "eg": 169,
+      "bd": 6,
+      "tr": 1,
+      "ma": 44
+    }
+  }
+}
