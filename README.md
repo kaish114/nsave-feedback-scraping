@@ -62,6 +62,16 @@ It's the internal-leverage layer for that problem:
    answers plain-English questions (*"What do Egyptian users complain about?"*)
    grounded strictly in the real reviews, citing which surfaces back each point.
 
+### AI analysis, with evidence you can click
+
+The executive summary leads with the headline, then breaks down top complaints,
+praise, most-wanted features, and recommended focus. Every claim carries inline
+**citation chips** — `[trustpilot/eg 1★]`, `[canny]`, `[linkedin]` — and each one is
+clickable: it opens the reviews drawer filtered to exactly those reviews. So the AI
+is never a black box; its evidence is always one tap away.
+
+![AI executive summary with clickable citations](docs/screenshots/ai-analysis.png)
+
 ## How it helps nsave
 
 - **Early warning on trust-breakers.** The tool surfaces "frozen funds / account
@@ -212,7 +222,17 @@ clicking it opens the drawer on exactly those reviews, so every AI claim is one 
 from its evidence. Served by `GET /api/reviews` (filter / search / paginate over the
 committed dataset; `src/dashboard/reviews.js`).
 
-![Reviews explorer drawer](docs/screenshots/reviews-drawer.png)
+*Clicking the "1★" bar opens the 294 one-star reviews, newest first — real text,
+source badge, country flag, and a "nsave replied" marker where the company responded:*
+
+![Reviews explorer — one-star reviews](docs/screenshots/reviews-drawer.png)
+
+*The same drawer filtered to the Canny wishlist, showing the raw feature requests
+(with vote counts and status) behind the aggregate chart:*
+
+![Reviews explorer — Canny wishlist](docs/screenshots/reviews-canny.png)
+
+*Dark theme (stepped for the dark surface, not an inverted flip):*
 
 ![Dashboard — dark](docs/screenshots/dashboard-dark.png)
 
