@@ -1,99 +1,127 @@
-# nsave Feedback Scraping
+# nsave · Feedback Intelligence
 
-Scraping intelligence and demo collectors for nsave's public feedback surfaces.
+Collects nsave's public user feedback from every scrapeable surface, normalizes it
+into one dataset, and presents it in an **nsave-themed dashboard with Claude AI
+analysis** built in.
 
-## Confirmed feedback surfaces
+**~1,294 feedback items across 6 surfaces** (App Store, Google Play, Trustpilot,
+Product Hunt, a Canny wishlist board, and curated public LinkedIn comments).
 
-| Surface | Volume | Approach | Risk |
+![Dashboard](docs/screenshots/dashboard-light.png)
+
+## Quick start
+
+```bash
+npm install
+
+# 1. Collect the data (or use the snapshots already committed in data/)
+npm run collect
+
+# 2. Run the dashboard
+export ANTHROPIC_API_KEY=sk-ant-...   # optional — turns on the AI features
+npm run dashboard                     # http://localhost:3000
+```
+
+## Where the data lives
+
+All collected feedback is stored as JSON in the **`data/` directory, committed to
+this repo** — so the dashboard runs immediately after cloning, no scrape required:
+
+| File | Contents |
+|---|---|
+| `data/appstore.json` | 482 App Store reviews (17 storefronts) |
+| `data/googleplay.json` | 420 Google Play reviews + listing metadata |
+| `data/trustpilot.json` | 140 Trustpilot reviews |
+| `data/producthunt.json` | 8 Product Hunt reviews |
+| `data/canny.json` | 214 Canny wishlist posts + votes/status |
+| `data/linkedin-curated.json` | 6 posts, 30 curated public comments |
+| `data/summary.json` | Combined cross-surface summary |
+
+Reviews share a normalized schema: `source, id, country, lang, rating, title, text,
+author, date, appVersion, thumbsUp`. Re-running a collector overwrites its file;
+`npm run summarize` rebuilds `data/summary.json` from whatever is on disk.
+
+## Dashboard
+
+A small Express app (`src/dashboard/`) serving a single-page dashboard.
+
+- **Themed after [nsave.com](https://www.nsave.com)** — white surfaces, near-black
+  ink, the nsave crimson accent (`#d60505`), and a Suisse-style grotesque font,
+  built on Material Design 3 tokens. Light + dark themes (dark is stepped for the
+  dark surface, not an inverted flip); responsive.
+- **Charts** are hand-built SVG/CSS bars on a colourblind-validated palette with
+  every bar directly labelled: rating distribution (diverging red→blue), sentiment
+  split, volume by surface and country, and the Canny wishlist.
+- **KPI cards**: total items, average rating, negative-review share, installs,
+  TrustScore.
+
+### AI integration (Claude)
+
+Set `ANTHROPIC_API_KEY` and the dashboard unlocks two features backed by
+`claude-opus-4-8`:
+
+- **Executive summary** — headline, top complaints, praise, most-wanted features,
+  and recommended focus, generated on load.
+- **Grounded Q&A** — ask a question (or use a suggested one) and Claude answers
+  *only* from the collected feedback, naming the surfaces behind each point.
+
+Both are grounded in a compact corpus (`src/dashboard/aggregate.js` → `buildCorpus`)
+sampled from the real reviews, Canny asks, and LinkedIn comments, plus the aggregate
+stats — so answers are anchored to the data, not the model's priors. Without a key
+the dashboard still runs fully; the AI panel shows a "set `ANTHROPIC_API_KEY`" notice.
+
+Endpoints: `/api/data`, `/api/summary`, `/api/ask`. Files: `aggregate.js` (data →
+chart aggregates + AI corpus), `ai.js` (Anthropic SDK calls), `server.js` (Express),
+`public/index.html` (the SPA).
+
+## Feedback surfaces
+
+| Surface | Volume collected | Approach | Risk |
 |---|---|---|---|
-| Apple App Store (id 6471736519) | 408 US ratings, 4.2/5, per-country storefronts | Free iTunes RSS reviews feed / `app-store-scraper` | Low |
-| Google Play (`com.nsave.app`) | ~4,400 ratings, ~4.36/5, 500k+ installs | `google-play-scraper` npm | Low–medium |
-| Canny (nsave.canny.io) | ~215 wishlist posts | Playwright headless render | Low |
-| Product Hunt | Dozens of reviews | Browser automation / GraphQL API | Low–medium |
-| Trustpilot | 110 reviews, 3.5/5 | Playwright, demo-only (bot-protected) | High |
-| LinkedIn | Company page + founder posts, public comments | Curated / owner-authorized only — see [docs/linkedin-research.md](docs/linkedin-research.md) | Highest |
-| YouTube | Arabic + English review videos | YouTube Data API v3 comments | Low |
-| Reddit | Negligible — no indexed content | Skip | — |
+| Apple App Store (id 6471736519) | 482 reviews, 17 storefronts | Free iTunes RSS reviews feed | Low |
+| Google Play (`com.nsave.app`) | 420 reviews; 4.39/5, 500k+ installs | `google-play-scraper` | Low–medium |
+| Trustpilot | 140 reviews, TrustScore 3.3 | Headless Chromium (`__NEXT_DATA__`), demo-only | High |
+| Canny (nsave.canny.io) | 214 wishlist posts, 1,193 votes | Headless Chromium (intercepts `/api/posts/get`) | Low |
+| Product Hunt | 8 reviews, 3.0/5 | Headless Chromium (Cloudflare-fronted) | Low–medium |
+| LinkedIn | 6 posts, 30 comments | Curated / owner-authorized only — [research](docs/linkedin-research.md) | Highest |
+| Reddit | none — no indexed content | Skipped | — |
 
-## Usage
-
-```bash
-npm install
-npm run collect             # both collectors + combined summary
-npm run collect:appstore    # App Store only (17 storefronts, iTunes RSS)
-npm run collect:googleplay  # Google Play only (10 lang/country locales)
-npm run collect:canny       # Canny wishlist board (headless Chromium)
-npm run collect:producthunt # Product Hunt reviews (headless Chromium)
-npm run collect:trustpilot  # Trustpilot reviews (headless Chromium, demo-only)
-npm run summarize           # rebuild data/summary.json from files on disk
-```
-
-Output lands in `data/` as JSON with a normalized review schema
-(`source, id, country, lang, rating, title, text, author, date, appVersion, thumbsUp`)
-plus per-source summaries (`data/summary.json`). Collectors are proxy-aware
-(honors `HTTPS_PROXY`) and pace requests politely.
-
-### Latest collection snapshot (2026-07-13)
-
-- **App Store:** 482 unique written reviews across 17 storefronts (top: us 158, pk 111, eg 82, gb 47, ng 39), avg 3.8.
-- **Google Play:** 420 unique written reviews across en/ar/bn/tr/fr locales, avg 3.62; listing shows score 4.39 from 4,583 ratings, 500,000+ installs.
-- Written-review averages sit well below the star-rating averages on both stores — text reviews skew toward complaints (1★ is the second-largest bucket on both).
-- **Canny:** 214 of 215 wishlist posts captured (1,193 votes). Statuses: 210 open, 2 planned, 2 in progress. Top asks: Apple/Google Pay (104 votes, planned), payment links (85), physical card (83), EUR/SEPA accounts (67), more currencies (52).
-- **Product Hunt:** 8 of the site's 9 reviews captured, 3.0 site average — polarized between mission-driven 5★ and account-freeze/support 1★ complaints.
-- **Trustpilot:** all 140 reviews captured (TrustScore 3.3, up from 110 reviews when first surveyed). Heavily polarized: 79×5★ vs 47×1★. Top countries: bd 34, eg 34, pk 25. Demo-only — production needs the paid Business API.
-- **LinkedIn (curated):** 6 high-engagement posts, 30 public comments in `data/linkedin-curated.json`. Not automated by design (ToS + litigation risk — see docs/linkedin-research.md). Product signal found: card waitlist friction, vertical-card design requests, Bangladesh availability complaint.
-- **Total: ~1,294 feedback items across 6 surfaces.**
-
-### Browser-based collectors
-
-Canny and Product Hunt are client-side rendered (Product Hunt is also
-Cloudflare-fronted), so those collectors drive headless Chromium via
-`playwright-core` (`CHROMIUM_PATH` env overrides the default
-`/opt/pw-browsers/chromium`). The Canny collector intercepts the SPA's own
-`/api/posts/get` responses rather than parsing the DOM. Behind an
-intercepting HTTPS proxy the browser hop is capped at TLS 1.2
-(`--ssl-version-max=tls1.2`) because the proxy resets Chromium's TLS 1.3
-ClientHello; certificate verification remains enabled.
-
-## Plan
-
-1. **Stage 1 (hours 0–8):** App Store RSS feed across target storefronts (us, gb, eg, pk, bd, ng, tr, dz, ma, ar) + Google Play reviews.
-2. **Stage 2 (hours 8–16):** Canny wishlist posts via Playwright; Product Hunt reviews.
-3. **Stage 3 (hours 16–24):** Trustpilot (polite, demo-only), YouTube comments, curated LinkedIn fixture.
-
-## Dashboard (Material Design 3 + AI)
-
-A small Express dashboard visualizes the collected data and integrates Claude for
-analysis.
+## Collectors
 
 ```bash
-npm install
-npm run collect          # populate data/ (or use the committed snapshots)
-export ANTHROPIC_API_KEY=sk-ant-...   # optional — enables the AI features
-npm run dashboard        # http://localhost:3000
+npm run collect              # all automated collectors + summary
+npm run collect:appstore     # App Store (iTunes RSS, 17 storefronts)
+npm run collect:googleplay   # Google Play (10 lang/country locales)
+npm run collect:canny        # Canny wishlist (headless Chromium)
+npm run collect:producthunt  # Product Hunt reviews (headless Chromium)
+npm run collect:trustpilot   # Trustpilot reviews (headless Chromium, demo-only)
+npm run summarize            # rebuild data/summary.json from disk
 ```
 
-- **Material Design 3 UI** — MD3 color/elevation/shape tokens, light + dark themes
-  (dark is a properly stepped theme, not an inverted flip), responsive layout.
-- **Charts** are hand-built SVG/CSS bars using a CVD-validated palette, every bar
-  directly labelled: rating distribution (diverging red→blue), sentiment split,
-  volume by surface and by country (sequential ramp), and the Canny wishlist.
-- **AI integration (Claude)** — an `ANTHROPIC_API_KEY` unlocks two features backed
-  by `claude-opus-4-8`:
-  - an **executive summary** of the feedback (headline, top complaints, praise,
-    most-wanted features, recommended focus), and
-  - a grounded **Q&A box** — ask a question and Claude answers from the collected
-    reviews, naming the surfaces behind each point.
+Collectors are proxy-aware (honour `HTTPS_PROXY`) and pace requests politely.
+LinkedIn is deliberately **not** automated — its ToS prohibit scraping and LinkedIn
+actively litigates; the fixture is hand-curated from public logged-out post pages.
+See [`docs/linkedin-research.md`](docs/linkedin-research.md).
 
-  Both are grounded in a compact corpus sampled from the data (negative/positive
-  reviews, Canny asks, LinkedIn comments) plus the aggregate stats. Without a key
-  the dashboard still runs fully — the charts and KPIs render, and the AI panel
-  shows a clear "set ANTHROPIC_API_KEY" notice.
+**Browser collectors:** Canny and Product Hunt are client-side rendered (Product
+Hunt is also Cloudflare-fronted), so they drive headless Chromium via
+`playwright-core` (`CHROMIUM_PATH` overrides the default `/opt/pw-browsers/chromium`).
+Behind an intercepting HTTPS proxy the browser→proxy hop is capped at TLS 1.2
+(`--ssl-version-max=tls1.2`) because the proxy resets Chromium's TLS 1.3 hello;
+certificate verification stays enabled.
 
-Architecture: `src/dashboard/aggregate.js` (reads `data/`, builds chart aggregates
-and the AI corpus), `src/dashboard/ai.js` (Anthropic SDK calls), `src/dashboard/server.js`
-(`/api/data`, `/api/summary`, `/api/ask`), `src/dashboard/public/index.html` (the SPA).
+## What the data shows
+
+Sentiment is sharply polarized. The 4.39 Google Play average masks a Trustpilot 3.3
+and Product Hunt 3.0, and **30% of written reviews are 1–2★**. The dominant
+complaints — consistent across App Store, Google Play, and Trustpilot — are frozen
+funds and long "account under review" holds, unresponsive support, and failed/stuck
+transfers, especially in the Egyptian, Pakistani, and Bangladeshi markets. Praise
+centres on fast transfers, strong FX rates, and escaping local inflation. The Canny
+board's top asks are Apple/Google Pay (104 votes, planned), payment links, and
+physical cards.
 
 ## Docs
 
 - [LinkedIn feedback-surface research](docs/linkedin-research.md)
+- Dashboard screenshots: [`docs/screenshots/`](docs/screenshots/)

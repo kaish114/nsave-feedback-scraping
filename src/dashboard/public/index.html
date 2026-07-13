@@ -6,34 +6,35 @@
   <title>nsave — Feedback Intelligence</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232a78d6'/%3E%3Ctext x='16' y='23' font-size='20' font-family='sans-serif' font-weight='700' fill='white' text-anchor='middle'%3En%3C/text%3E%3C/svg%3E" />
   <style>
-    /* ---------- Material Design 3 tokens ---------- */
+    /* ---------- Material Design 3 tokens, nsave brand ---------- */
+    /* Brand: white surfaces, near-black ink (#151517), crimson accent (#d60505). */
     :root {
-      --md-primary:#2a78d6; --md-on-primary:#ffffff;
-      --md-primary-container:#d7e6fb; --md-on-primary-container:#0a2744;
-      --md-surface:#fbfcfd; --md-surface-container-lowest:#ffffff;
-      --md-surface-container:#eef1f6; --md-surface-container-high:#e7ebf1;
-      --md-on-surface:#1a1c1e; --md-on-surface-variant:#43474e;
-      --md-outline:#73777f; --md-outline-variant:#c8ccd4;
-      --md-shadow:rgba(10,20,40,.14);
-      /* data-viz roles */
-      --surface-1:#fbfcfd; --text-primary:#1a1c1e; --text-secondary:#43474e; --text-muted:#73777f;
+      --md-primary:#d60505; --md-on-primary:#ffffff;
+      --md-primary-container:#ffe1e1; --md-on-primary-container:#4d0000;
+      --md-surface:#ffffff; --md-surface-container-lowest:#ffffff;
+      --md-surface-container:#f6f6f7; --md-surface-container-high:#ededee;
+      --md-on-surface:#151517; --md-on-surface-variant:#56565a;
+      --md-outline:#9a9a9e; --md-outline-variant:#e6e6e8;
+      --md-shadow:rgba(20,20,23,.07);
+      /* data-viz roles — charts keep the CVD-validated palette (accessibility) */
+      --surface-1:#ffffff; --text-primary:#151517; --text-secondary:#56565a; --text-muted:#8a8a8e;
       --series-1:#2a78d6; --series-2:#1baf7a;
       --rate-1:#d03b3b; --rate-2:#ec835a; --rate-3:#9aa0a6; --rate-4:#6da7ec; --rate-5:#2a78d6;
-      --good:#0ca30c; --warning:#c98500; --critical:#d03b3b;
+      --good:#0ca30c; --warning:#c98500; --critical:#d60505;
       --seq-100:#cde2fb; --seq-250:#86b6ef; --seq-400:#3987e5; --seq-550:#1c5cab;
     }
     :root[data-theme="dark"] {
-      --md-primary:#a6c8ff; --md-on-primary:#00325a;
-      --md-primary-container:#204876; --md-on-primary-container:#d4e3ff;
-      --md-surface:#131417; --md-surface-container-lowest:#0d0e10;
-      --md-surface-container:#1e2023; --md-surface-container-high:#282a2e;
-      --md-on-surface:#e3e2e6; --md-on-surface-variant:#c3c7cf;
-      --md-outline:#8d9199; --md-outline-variant:#43474e;
-      --md-shadow:rgba(0,0,0,.5);
-      --surface-1:#1e2023; --text-primary:#e3e2e6; --text-secondary:#c3c7cf; --text-muted:#8d9199;
+      --md-primary:#ff6161; --md-on-primary:#3a0000;
+      --md-primary-container:#5c0f0f; --md-on-primary-container:#ffdada;
+      --md-surface:#0f0f10; --md-surface-container-lowest:#0a0a0b;
+      --md-surface-container:#18181a; --md-surface-container-high:#222225;
+      --md-on-surface:#f2f2f3; --md-on-surface-variant:#b8b8bc;
+      --md-outline:#8a8a8e; --md-outline-variant:#2e2e31;
+      --md-shadow:rgba(0,0,0,.55);
+      --surface-1:#18181a; --text-primary:#f2f2f3; --text-secondary:#b8b8bc; --text-muted:#8a8a8e;
       --series-1:#3987e5; --series-2:#199e70;
       --rate-1:#e66767; --rate-2:#ec835a; --rate-3:#8d9199; --rate-4:#5598e7; --rate-5:#3987e5;
-      --good:#3ec93e; --warning:#eda100; --critical:#e66767;
+      --good:#3ec93e; --warning:#eda100; --critical:#ff6161;
       --seq-100:#184f95; --seq-250:#256abf; --seq-400:#3987e5; --seq-550:#86b6ef;
     }
     @media (prefers-color-scheme:dark){ :root:not([data-theme]){ color-scheme:dark; } }
@@ -41,22 +42,22 @@
     *{ box-sizing:border-box; }
     body{
       margin:0; background:var(--md-surface); color:var(--md-on-surface);
-      font-family:"Roboto","Segoe UI",system-ui,-apple-system,sans-serif;
+      font-family:"Suisse Intl","Helvetica Neue","Helvetica","Arial Nova",Arial,sans-serif;
       -webkit-font-smoothing:antialiased; transition:background .25s,color .25s;
     }
-    h1,h2,h3{ margin:0; font-weight:500; letter-spacing:.1px; }
+    h1,h2,h3{ margin:0; font-weight:600; letter-spacing:-.2px; }
     a{ color:var(--md-primary); }
 
     /* Top app bar */
     .appbar{
-      position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:16px;
-      padding:14px 24px; background:var(--md-surface-container);
+      position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:14px;
+      padding:14px 24px; background:var(--md-surface);
       border-bottom:1px solid var(--md-outline-variant);
     }
     .appbar .logo{
-      width:36px; height:36px; border-radius:10px; flex:0 0 auto;
-      background:linear-gradient(135deg,var(--md-primary),var(--series-2));
-      display:grid; place-items:center; color:var(--md-on-primary); font-weight:700; font-size:18px;
+      width:34px; height:34px; border-radius:9px; flex:0 0 auto;
+      background:linear-gradient(160deg,#e21414,#b30000);
+      display:grid; place-items:center; color:#fff; font-weight:700; font-size:19px;
     }
     .appbar .titles{ display:flex; flex-direction:column; line-height:1.25; }
     .appbar .titles h1{ font-size:19px; }
