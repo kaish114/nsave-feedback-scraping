@@ -199,17 +199,33 @@ See [`docs/linkedin-research.md`](docs/linkedin-research.md).
   a compact corpus (`src/dashboard/aggregate.js` → `buildCorpus`) sampled from the
   real reviews, Canny asks, and LinkedIn comments plus the aggregate stats.
 
+### Reviews explorer — read the real feedback behind every number
+
+Every chart bar, KPI, and wishlist item is clickable: click "1★ · 294" or "Egypt ·
+285" or a surface bar and a side drawer slides in with the actual reviews behind it.
+Inside the drawer you can full-text search, filter by surface, rating, country, and
+language, and sort — with each review shown as a card (source badge, star rating,
+country flag, date, and text; Arabic/Bengali render right-to-left, and a "nsave
+replied" marker shows where the company responded). **The AI's citations are
+clickable too** — when the summary says a theme appears on `[trustpilot/eg 1★]`,
+clicking it opens the drawer on exactly those reviews, so every AI claim is one tap
+from its evidence. Served by `GET /api/reviews` (filter / search / paginate over the
+committed dataset; `src/dashboard/reviews.js`).
+
+![Reviews explorer drawer](docs/screenshots/reviews-drawer.png)
+
 ![Dashboard — dark](docs/screenshots/dashboard-dark.png)
 
 ## Architecture
 
 ```
-public/index.html          the single-page dashboard (served statically)
-api/{data,summary,ask}.js  Vercel serverless endpoints
+public/index.html               the single-page dashboard (served statically)
+api/{data,summary,ask,reviews}.js  Vercel serverless endpoints
 src/dashboard/
-  aggregate.js             reads data/ → chart aggregates + AI grounding corpus
-  ai.js                    Anthropic SDK calls (summary + grounded Q&A)
-  server.js                local Express server (npm run dashboard)
+  aggregate.js                  reads data/ → chart aggregates + AI grounding corpus
+  reviews.js                    unified review index (filter/search/paginate)
+  ai.js                         Anthropic SDK calls (summary + grounded Q&A)
+  server.js                     local Express server (npm run dashboard)
 src/collectors/*.js        the scrapers (dev-time data collection)
 data/*.json                the committed dataset
 ```

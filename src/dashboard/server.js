@@ -2,6 +2,7 @@
 import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { buildAggregates } from './aggregate.js';
+import { queryReviews, reviewFacets } from './reviews.js';
 import { aiEnabled, generateSummary, answerQuestion } from './ai.js';
 
 const app = express();
@@ -17,6 +18,18 @@ app.get('/api/data', async (_req, res) => {
   try {
     aggCache ??= await buildAggregates();
     res.json({ ...aggCache, aiEnabled: aiEnabled() });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/reviews', async (req, res) => {
+  try {
+    const [result, facets] = await Promise.all([
+      queryReviews(req.query),
+      Number(req.query.offset || 0) === 0 ? reviewFacets() : Promise.resolve(null),
+    ]);
+    res.json(facets ? { ...result, facets } : result);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

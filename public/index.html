@@ -163,6 +163,75 @@
     @keyframes spin{ to{ transform:rotate(360deg); } }
     .muted{ color:var(--md-on-surface-variant); }
     footer{ text-align:center; font-size:12px; color:var(--md-on-surface-variant); padding:32px 0 12px; }
+
+    /* clickable data affordance */
+    .bar-row.clickable, .kpi.clickable, .canny-item.clickable{ cursor:pointer; }
+    .bar-row.clickable:hover .bar-track{ outline:2px solid var(--md-primary); outline-offset:1px; }
+    .kpi.clickable{ transition:border-color .15s, transform .1s; }
+    .kpi.clickable:hover{ border-color:var(--md-primary); }
+    .canny-item.clickable:hover{ background:var(--md-surface-container); }
+    .pill-btn{ appearance:none; cursor:pointer; font-family:inherit; font-size:13px; font-weight:600;
+      border:1px solid var(--md-outline-variant); background:var(--md-surface-container-lowest);
+      color:var(--md-on-surface); border-radius:22px; padding:8px 16px; display:inline-flex; align-items:center; gap:7px;
+      transition:background .2s,border-color .2s; }
+    .pill-btn:hover{ border-color:var(--md-primary); }
+    .cite{ cursor:pointer; border-bottom:1.5px solid color-mix(in srgb,var(--md-primary) 45%,transparent);
+      color:var(--md-primary); font-weight:600; white-space:nowrap; }
+    .cite:hover{ background:color-mix(in srgb,var(--md-primary) 12%,transparent); border-radius:3px; }
+
+    /* Reviews drawer (MD3 side sheet) */
+    .scrim{ position:fixed; inset:0; background:rgba(20,20,23,.42); opacity:0; visibility:hidden;
+      transition:opacity .25s, visibility .25s; z-index:40; }
+    .scrim.open{ opacity:1; visibility:visible; }
+    .drawer{ position:fixed; top:0; right:0; height:100%; width:min(580px,100vw);
+      background:var(--md-surface); box-shadow:-16px 0 44px var(--md-shadow);
+      transform:translateX(100%); transition:transform .28s cubic-bezier(.2,.7,.3,1);
+      z-index:41; display:flex; flex-direction:column; }
+    .drawer.open{ transform:translateX(0); }
+    .drawer-head{ padding:18px 20px 12px; border-bottom:1px solid var(--md-outline-variant); }
+    .drawer-head .row{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    .drawer-head h2{ font-size:18px; font-weight:600; }
+    .drawer-head .ctx{ font-size:12.5px; color:var(--md-on-surface-variant); margin-top:3px; }
+    .drawer-search{ margin-top:12px; display:flex; align-items:center; gap:8px;
+      background:var(--md-surface-container); border:1px solid var(--md-outline-variant);
+      border-radius:24px; padding:10px 15px; }
+    .drawer-search input{ border:none; background:transparent; outline:none; flex:1; font-size:14px;
+      font-family:inherit; color:var(--md-on-surface); }
+    .drawer-filters{ display:flex; gap:7px; flex-wrap:wrap; margin-top:11px; }
+    .fchip{ font-size:12px; padding:6px 11px; border-radius:20px; border:1px solid var(--md-outline-variant);
+      background:var(--md-surface-container-lowest); color:var(--md-on-surface-variant); cursor:pointer; white-space:nowrap; }
+    .fchip.on{ background:var(--md-primary); border-color:var(--md-primary); color:var(--md-on-primary); font-weight:600; }
+    .fchip .dot{ display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:5px; vertical-align:1px; }
+    .drawer-selects{ display:flex; gap:8px; flex-wrap:wrap; margin-top:9px; }
+    .drawer-selects select{ font-family:inherit; font-size:12.5px; color:var(--md-on-surface);
+      background:var(--md-surface-container-lowest); border:1px solid var(--md-outline-variant);
+      border-radius:18px; padding:6px 11px; cursor:pointer; }
+    .drawer-list{ flex:1; overflow:auto; padding:12px 20px 28px; }
+    .drawer-count{ font-size:12px; color:var(--md-on-surface-variant); margin:2px 2px 12px; }
+    .rev{ border:1px solid var(--md-outline-variant); border-radius:14px; padding:14px 15px; margin-bottom:11px; }
+    .rev-top{ display:flex; align-items:center; gap:8px; margin-bottom:7px; flex-wrap:wrap; }
+    .rev-badge{ font-size:10px; font-weight:700; letter-spacing:.3px; text-transform:uppercase; color:#fff;
+      padding:3px 8px; border-radius:6px; }
+    .rev-stars{ font-size:12.5px; letter-spacing:.5px; }
+    .rev-country{ font-size:12px; color:var(--md-on-surface-variant); }
+    .rev-date{ margin-left:auto; font-size:11px; color:var(--md-on-surface-variant); }
+    .rev h4{ font-size:14px; font-weight:600; margin:0 0 3px; }
+    .rev p{ font-size:13.5px; line-height:1.55; margin:0; color:var(--md-on-surface); }
+    .rev .rev-foot{ margin-top:9px; display:flex; align-items:center; gap:9px; flex-wrap:wrap; }
+    .rev-votes{ font-size:12px; font-weight:600; background:var(--md-primary-container);
+      color:var(--md-on-primary-container); border-radius:8px; padding:3px 9px; }
+    .rev-status{ font-size:11px; border-radius:20px; padding:3px 9px; font-weight:600;
+      background:var(--md-surface-container-high); color:var(--md-on-surface-variant); text-transform:capitalize; }
+    .rev-replied{ font-size:11px; color:var(--good); font-weight:600; }
+    .rev-meta{ font-size:11.5px; color:var(--md-on-surface-variant); }
+    .rev-signal{ font-size:11px; background:color-mix(in srgb,var(--warning) 20%,transparent); color:var(--warning);
+      border-radius:20px; padding:3px 9px; font-weight:600; }
+    .loadmore{ display:block; width:100%; margin-top:6px; padding:11px; border-radius:12px; cursor:pointer;
+      font-family:inherit; font-size:13.5px; font-weight:600; border:1px solid var(--md-outline-variant);
+      background:var(--md-surface-container); color:var(--md-on-surface); }
+    .loadmore:hover{ border-color:var(--md-primary); }
+    .loadmore:disabled{ opacity:.5; cursor:default; }
+    .drawer-empty{ text-align:center; color:var(--md-on-surface-variant); font-size:13.5px; padding:40px 20px; }
   </style>
 </head>
 <body>
@@ -173,10 +242,14 @@
       <span id="subtitle">Loading…</span>
     </div>
     <div class="spacer"></div>
+    <button class="pill-btn" id="browse-btn" title="Browse the raw reviews">🗂 Browse reviews</button>
     <button class="icon-btn" id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">◐</button>
   </header>
 
   <main>
+    <div class="hint" style="margin:0 4px 12px;color:var(--md-on-surface-variant);font-size:12.5px">
+      Tip: click any chart bar, number, or wishlist item to read the real reviews behind it.
+    </div>
     <div class="grid kpis" id="kpis"></div>
 
     <div class="section-title">AI analysis</div>
@@ -232,6 +305,42 @@
     <footer>nsave public feedback — demo dashboard · data collected by the scraping pipeline</footer>
   </main>
 
+  <!-- Reviews explorer drawer -->
+  <div class="scrim" id="scrim"></div>
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div class="row">
+        <div>
+          <h2 id="drawer-title">Reviews</h2>
+          <div class="ctx" id="drawer-ctx"></div>
+        </div>
+        <button class="icon-btn" id="drawer-close" aria-label="Close">✕</button>
+      </div>
+      <div class="drawer-search">
+        <span class="muted">🔍</span>
+        <input id="drawer-q" type="text" placeholder="Search these reviews… (e.g. frozen, card, transfer)" />
+      </div>
+      <div class="drawer-filters" id="drawer-sources"></div>
+      <div class="drawer-selects">
+        <select id="f-rating">
+          <option value="">All ratings</option>
+          <option value="5">5★</option><option value="4">4★</option>
+          <option value="3">3★</option><option value="2">2★</option><option value="1">1★</option>
+        </select>
+        <select id="f-country"><option value="">All countries</option></select>
+        <select id="f-lang"><option value="">All languages</option></select>
+        <select id="f-sort">
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="rating-low">Rating: low → high</option>
+          <option value="rating-high">Rating: high → low</option>
+          <option value="votes">Most votes (Canny)</option>
+        </select>
+      </div>
+    </div>
+    <div class="drawer-list" id="drawer-list"></div>
+  </aside>
+
   <script>
     const $ = (s) => document.querySelector(s);
     const esc = (s) => (s||'').replace(/[&<>]/g, (c)=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
@@ -249,17 +358,20 @@
     };
 
     // ---------- chart helpers (hand-built bars, always labelled) ----------
-    function barRows(el, rows, colorFn, catFn){
+    function barRows(el, rows, colorFn, catFn, filterFn){
       const max = Math.max(...rows.map(r=>r.count), 1);
       el.innerHTML = rows.map((r,i)=>{
         const pct = Math.max((r.count/max)*100, 2);
-        return `<div class="bar-row ${r.ratingRow?'rating-row':''}">
+        return `<div class="bar-row ${r.ratingRow?'rating-row':''} ${filterFn?'clickable':''}" data-i="${i}">
           <div class="cat">${catFn(r,i)}</div>
           <div class="bar-track"><div class="bar-fill" style="width:0%;background:${colorFn(r,i)}" data-w="${pct}"></div></div>
           <div class="num">${r.count.toLocaleString()}</div>
         </div>`;
       }).join('');
       requestAnimationFrame(()=> el.querySelectorAll('.bar-fill').forEach(f=> f.style.width=f.dataset.w+'%'));
+      if (filterFn) el.querySelectorAll('.bar-row').forEach(row=>{
+        row.onclick = () => { const spec = filterFn(rows[+row.dataset.i]); if (spec) openReviews(spec.filter, spec.label); };
+      });
     }
     const seqColor = (i,n) => { const ramp=['var(--seq-550)','var(--seq-400)','var(--seq-250)','var(--seq-100)'];
       return ramp[Math.min(Math.floor(i/Math.max(1,n/ramp.length)),ramp.length-1)]; };
@@ -279,17 +391,24 @@
         { label:'Play Store installs', value:k.googlePlayInstalls||'—', sub:`${(k.googlePlayRatings||0).toLocaleString()} ratings` },
         { label:'Trustpilot', value:data.trustScore??'—', unit:'/5', sub:'TrustScore' },
       ];
-      $('#kpis').innerHTML = kpis.map(c=>`<div class="card kpi">
+      // KPIs — some open the drawer
+      kpis[0].open = { filter:{}, label:'All feedback' };
+      kpis[2].open = { filter:{ rating:'1,2', sort:'newest' }, label:'Negative reviews (1–2★)' };
+      $('#kpis').innerHTML = kpis.map((c,i)=>`<div class="card kpi ${c.open?'clickable':''}" data-kpi="${i}">
         <div class="label">${c.label}</div>
         <div class="value">${c.value}${c.unit?`<span class="unit">${c.unit}</span>`:''}</div>
         <div class="sub">${c.sub}</div></div>`).join('');
+      $('#kpis').querySelectorAll('.kpi').forEach(el=>{
+        const c = kpis[+el.dataset.kpi]; if (c.open) el.onclick = () => openReviews(c.open.filter, c.open.label);
+      });
 
-      // Rating distribution (diverging red→blue by star)
+      // Rating distribution (diverging red→blue by star) — click a bar → those reviews
       const rateColors = ['var(--rate-1)','var(--rate-2)','var(--rate-3)','var(--rate-4)','var(--rate-5)'];
       barRows($('#rating-chart'),
         data.ratingDistribution.map(r=>({ ...r, ratingRow:true })),
         (r)=> rateColors[r.rating-1],
-        (r)=> `${r.rating} <span class="star">★</span>`);
+        (r)=> `${r.rating} <span class="star">★</span>`,
+        (r)=> ({ filter:{ rating:String(r.rating), sort:'newest' }, label:`${r.count.toLocaleString()} reviews · ${r.rating}★` }));
 
       // Sentiment segmented bar
       const s = data.sentiment, tot = s.positive+s.neutral+s.negative || 1;
@@ -303,13 +422,15 @@
           return `<span style="width:${p}%;background:${g.c}" title="${g.k}: ${g.v}">${p>7?Math.round(p)+'%':''}</span>`; }).join('')}</div>
          <div class="seg-legend">${segs.map(g=>`<span><i style="background:${g.c}"></i>${g.k} · ${g.v.toLocaleString()} (${Math.round(g.v/tot*100)}%)</span>`).join('')}</div>`;
 
-      // Volume by surface
+      // Volume by surface — click → that surface's items
       const surf = data.bySurface;
-      barRows($('#surface-chart'), surf, (r,i)=>seqColor(i,surf.length), (r)=>esc(r.label));
+      barRows($('#surface-chart'), surf, (r,i)=>seqColor(i,surf.length), (r)=>esc(r.label),
+        (r)=> ({ filter:{ source:r.source, sort:'newest' }, label:`${r.count.toLocaleString()} items · ${r.label}` }));
 
-      // Top countries
+      // Top countries — click → that country's reviews
       const c = data.topCountries;
-      barRows($('#country-chart'), c, (r,i)=>seqColor(i,c.length), (r)=>esc(r.name));
+      barRows($('#country-chart'), c, (r,i)=>seqColor(i,c.length), (r)=>esc(r.name),
+        (r)=> ({ filter:{ country:r.code, sort:'newest' }, label:`${r.count.toLocaleString()} reviews · ${r.name}` }));
 
       // Canny
       if (data.cannySummary) {
@@ -318,20 +439,34 @@
       }
       $('#canny-list').innerHTML = data.cannyTop.map(p=>{
         const cls = p.status==='planned'?'planned':p.status==='in progress'?'progress':'open';
-        return `<div class="canny-item">
+        return `<div class="canny-item clickable">
           <span class="canny-votes">▲ ${p.votes}</span>
           <span class="canny-title">${esc(p.title)}</span>
           <span class="chip ${cls}">${esc(p.status)}</span></div>`;
       }).join('');
+      $('#canny-list').onclick = () => openReviews({ source:'canny', sort:'votes' }, 'Canny wishlist · all requests');
 
       // AI
       setupAI(data.aiEnabled);
     }
 
     // ---------- AI ----------
+    // Turn AI citations like [trustpilot/eg 1★] or [canny 104 votes] into
+    // clickable chips that open the drawer filtered to that evidence.
+    const SRC_ALIAS = { 'appstore':'appstore','app store':'appstore','googleplay':'googleplay','google play':'googleplay','trustpilot':'trustpilot','producthunt':'producthunt','product hunt':'producthunt','canny':'canny','linkedin':'linkedin' };
+    function linkifyCites(html){
+      return html.replace(/\[(app ?store|google ?play|trustpilot|product ?hunt|canny|linkedin)([^\]]*)\]/gi, (m, src, rest)=>{
+        const source = SRC_ALIAS[src.toLowerCase()];
+        if(!source) return m;
+        const f = { source };
+        const rc = rest.match(/\/([a-z]{2})\b/i); if(rc) f.country = rc[1].toLowerCase();
+        const rr = rest.match(/(\d)\s*(?:★|star)/); if(rr) f.rating = rr[1];
+        return `<span class="cite" data-cite='${JSON.stringify(f).replace(/'/g,"&#39;")}'>${m}</span>`;
+      });
+    }
     function mdToHtml(md){
       const lines = md.split('\n'); let html=''; let inList=false;
-      const inline = (t)=> esc(t).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+      const inline = (t)=> linkifyCites(esc(t).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>'));
       for (const raw of lines){
         const line = raw.trimEnd();
         if (/^#{2,3}\s/.test(line)){ if(inList){html+='</ul>';inList=false;} html+=`<h3>${inline(line.replace(/^#{2,3}\s/,''))}</h3>`; }
@@ -380,6 +515,135 @@
       btn.onclick = ask;
       input.addEventListener('keydown', e=>{ if(e.key==='Enter') ask(); });
     }
+
+    // ---------- Reviews explorer drawer ----------
+    const SRC = {
+      appstore:{label:'App Store',c:'#2a78d6'}, googleplay:{label:'Google Play',c:'#1baf7a'},
+      trustpilot:{label:'Trustpilot',c:'#b07d00'}, producthunt:{label:'Product Hunt',c:'#eb6834'},
+      canny:{label:'Canny',c:'#d60505'}, linkedin:{label:'LinkedIn',c:'#4a3aa7'},
+    };
+    const flag = (cc)=> cc && cc.length===2
+      ? cc.toUpperCase().replace(/./g, ch=>String.fromCodePoint(127397+ch.charCodeAt(0))) : '';
+    function relDate(iso){
+      if(!iso) return ''; const t=Date.parse(iso); if(!t) return '';
+      const d=Math.floor((Date.now()-t)/86400000);
+      if(d<=0) return 'today'; if(d===1) return '1 day ago'; if(d<30) return d+' days ago';
+      if(d<365){ const m=Math.floor(d/30); return m+(m===1?' month ago':' months ago'); }
+      const y=Math.floor(d/365); return y+(y===1?' year ago':' years ago');
+    }
+
+    let dState = { filter:{}, offset:0, total:0, items:[], loading:false, facetsDone:false };
+    const drawer=$('#drawer'), scrim=$('#scrim'), listEl=$('#drawer-list');
+
+    function openReviews(filter, label){
+      dState.filter = { sort:'newest', ...filter };
+      dState.offset = 0; dState.items = []; dState.total = 0;
+      $('#drawer-title').textContent = label || 'Reviews';
+      $('#drawer-ctx').textContent = filterSummary(dState.filter);
+      // sync controls
+      $('#drawer-q').value = dState.filter.q || '';
+      $('#f-rating').value = /^[1-5]$/.test(dState.filter.rating||'') ? dState.filter.rating : '';
+      $('#f-country').value = dState.filter.country || '';
+      $('#f-lang').value = dState.filter.lang || '';
+      $('#f-sort').value = dState.filter.sort || 'newest';
+      scrim.classList.add('open'); drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
+      listEl.innerHTML = `<div class="drawer-count"><span class="spinner"></span> Loading…</div>`;
+      fetchPage(true);
+    }
+    function closeDrawer(){
+      scrim.classList.remove('open'); drawer.classList.remove('open');
+      drawer.setAttribute('aria-hidden','true'); document.body.style.overflow='';
+    }
+    function filterSummary(f){
+      const parts=[];
+      if(f.source) parts.push((SRC[f.source]||{}).label||f.source);
+      if(f.rating) parts.push(f.rating.includes(',')?f.rating.replace(/,/g,'–')+'★':f.rating+'★');
+      if(f.country) parts.push(f.country.toUpperCase());
+      if(f.lang) parts.push({en:'Latin',ar:'Arabic',bn:'Bengali'}[f.lang]||f.lang);
+      if(f.q) parts.push(`“${f.q}”`);
+      return parts.length ? 'Filtered: '+parts.join(' · ') : 'All feedback surfaces';
+    }
+    function qs(obj){
+      return Object.entries(obj).filter(([,v])=>v!=null&&v!=='').map(([k,v])=>k+'='+encodeURIComponent(v)).join('&');
+    }
+    async function fetchPage(reset){
+      if(dState.loading) return; dState.loading=true;
+      try{
+        const q = qs({ ...dState.filter, offset:dState.offset, limit:30 });
+        const d = await (await fetch('/api/reviews?'+q)).json();
+        if(d.facets && !dState.facetsDone) populateFacets(d.facets);
+        dState.total = d.total;
+        dState.items = reset ? d.items : dState.items.concat(d.items);
+        dState.offset = dState.items.length;
+        renderList(d.hasMore);
+      }catch{ listEl.innerHTML=`<div class="drawer-empty">Failed to load reviews.</div>`; }
+      finally{ dState.loading=false; }
+    }
+    function populateFacets(f){
+      dState.facetsDone = true;
+      // source chips
+      const cur = dState.filter.source || '';
+      $('#drawer-sources').innerHTML =
+        `<span class="fchip ${!cur?'on':''}" data-src="">All</span>` +
+        f.sources.map(s=>`<span class="fchip ${cur===s.id?'on':''}" data-src="${s.id}"><span class="dot" style="background:${(SRC[s.id]||{}).c||'#888'}"></span>${esc(s.label)}</span>`).join('');
+      $('#drawer-sources').querySelectorAll('.fchip').forEach(ch=> ch.onclick=()=>{
+        dState.filter.source = ch.dataset.src || undefined;
+        $('#drawer-sources').querySelectorAll('.fchip').forEach(x=>x.classList.toggle('on', x===ch));
+        reloadFromControls();
+      });
+      // country + language selects
+      $('#f-country').innerHTML = '<option value="">All countries</option>' +
+        f.countries.map(c=>`<option value="${c.code}">${esc(c.name)} (${c.count})</option>`).join('');
+      $('#f-lang').innerHTML = '<option value="">All languages</option>' +
+        f.languages.map(l=>`<option value="${l.id}">${esc(l.label)} (${l.count})</option>`).join('');
+      $('#f-country').value = dState.filter.country || '';
+      $('#f-lang').value = dState.filter.lang || '';
+    }
+    function renderList(hasMore){
+      if(dState.total===0){ listEl.innerHTML=`<div class="drawer-empty">No reviews match these filters.<br>Try clearing the search or a filter.</div>`; return; }
+      const cards = dState.items.map(cardHtml).join('');
+      const more = hasMore ? `<button class="loadmore" id="loadmore">Load more (${(dState.total-dState.items.length).toLocaleString()} more)</button>` : '';
+      listEl.innerHTML = `<div class="drawer-count">Showing ${dState.items.length.toLocaleString()} of ${dState.total.toLocaleString()} · ${filterSummary(dState.filter).replace(/^Filtered: /,'')}</div>${cards}${more}`;
+      const lm = $('#loadmore'); if(lm) lm.onclick=()=>{ lm.disabled=true; lm.textContent='Loading…'; fetchPage(false); };
+    }
+    function cardHtml(it){
+      const m = SRC[it.source]||{label:it.source,c:'#888'};
+      const starColor = it.rating<=2?'var(--critical)':it.rating>=4?'var(--rate-5)':'var(--rate-3)';
+      const stars = it.rating ? `<span class="rev-stars" style="color:${starColor}">${'★'.repeat(it.rating)}${'☆'.repeat(5-it.rating)}</span>` : '';
+      const country = it.country ? `<span class="rev-country">${flag(it.country)} ${esc(it.country.toUpperCase())}</span>` : '';
+      const date = it.date ? `<span class="rev-date">${relDate(it.date)}</span>` : '';
+      const title = it.title ? `<h4 dir="auto">${esc(it.title)}</h4>` : '';
+      const body = it.text ? `<p dir="auto">${esc(it.text)}</p>` : '';
+      let foot='';
+      if(it.source==='canny') foot=`<div class="rev-foot"><span class="rev-votes">▲ ${it.votes}</span><span class="rev-status">${esc(it.status||'open')}</span></div>`;
+      else if(it.source==='linkedin') foot=`<div class="rev-foot"><span class="rev-meta">${esc(it.author||'')}${it.topic?' · on “'+esc(it.topic)+'”':''}</span>${it.signal?`<span class="rev-signal">${esc(it.signal)}</span>`:''}</div>`;
+      else if(it.replied) foot=`<div class="rev-foot"><span class="rev-replied">✓ nsave replied</span></div>`;
+      return `<div class="rev"><div class="rev-top"><span class="rev-badge" style="background:${m.c}">${esc(m.label)}</span>${stars}${country}${date}</div>${title}${body}${foot}</div>`;
+    }
+    function reloadFromControls(){
+      dState.filter.rating = $('#f-rating').value || undefined;
+      dState.filter.country = $('#f-country').value || undefined;
+      dState.filter.lang = $('#f-lang').value || undefined;
+      dState.filter.sort = $('#f-sort').value || 'newest';
+      dState.filter.q = $('#drawer-q').value.trim() || undefined;
+      dState.offset = 0; dState.items = [];
+      $('#drawer-ctx').textContent = filterSummary(dState.filter);
+      listEl.innerHTML = `<div class="drawer-count"><span class="spinner"></span> Loading…</div>`;
+      fetchPage(true);
+    }
+    // wire drawer controls
+    ['#f-rating','#f-country','#f-lang','#f-sort'].forEach(s=> $(s).addEventListener('change', reloadFromControls));
+    let qTimer; $('#drawer-q').addEventListener('input', ()=>{ clearTimeout(qTimer); qTimer=setTimeout(reloadFromControls, 320); });
+    $('#drawer-close').onclick = closeDrawer;
+    scrim.onclick = closeDrawer;
+    $('#browse-btn').onclick = ()=> openReviews({ sort:'newest' }, 'All feedback');
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape' && drawer.classList.contains('open')) closeDrawer(); });
+    // clickable AI citations (delegated)
+    document.addEventListener('click', e=>{
+      const cite = e.target.closest('.cite'); if(!cite) return;
+      try{ const f = JSON.parse(cite.dataset.cite); openReviews(f, 'Cited evidence · '+filterSummary(f).replace(/^Filtered: /,'')); }catch{}
+    });
 
     load().catch(e=> $('#subtitle').textContent = 'Failed to load data: '+e.message);
   </script>
