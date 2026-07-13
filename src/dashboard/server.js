@@ -6,7 +6,8 @@ import { aiEnabled, generateSummary, answerQuestion } from './ai.js';
 
 const app = express();
 app.use(express.json({ limit: '256kb' }));
-app.use(express.static(fileURLToPath(new URL('./public/', import.meta.url))));
+// Serves the same SPA that Vercel serves statically from the repo-root public/.
+app.use(express.static(fileURLToPath(new URL('../../public/', import.meta.url))));
 
 // Cache the aggregates and AI summary in memory (data is static per run).
 let aggCache;

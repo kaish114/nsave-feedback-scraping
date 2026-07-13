@@ -1,15 +1,24 @@
 // Reads the collected data/*.json files and produces the aggregates the
 // dashboard renders, plus a compact corpus used to ground the AI features.
 import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
-const DATA = new URL('../../data/', import.meta.url);
+// Resolve data/ robustly: the path relative to this module works locally and in
+// most bundlers; process.cwd()/data is the fallback for Vercel's function bundle
+// (where data/** is shipped via includeFiles at the task root).
+const DATA_DIRS = [
+  fileURLToPath(new URL('../../data/', import.meta.url)),
+  path.join(process.cwd(), 'data'),
+];
 
 async function load(name) {
-  try {
-    return JSON.parse(await readFile(new URL(name, DATA), 'utf8'));
-  } catch {
-    return null;
+  for (const dir of DATA_DIRS) {
+    try {
+      return JSON.parse(await readFile(path.join(dir, name), 'utf8'));
+    } catch { /* try next candidate */ }
   }
+  return null;
 }
 
 const COUNTRY_NAMES = {
