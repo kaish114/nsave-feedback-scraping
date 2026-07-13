@@ -12,6 +12,8 @@ for next.
 **~1,294 feedback items across 6 surfaces** — App Store, Google Play, Trustpilot,
 Product Hunt, a Canny wishlist board, and curated public LinkedIn comments.
 
+**▶ Live demo: [nsave-feedback-intelligence.vercel.app](https://nsave-feedback-intelligence.vercel.app)**
+
 ![Dashboard — light](docs/screenshots/dashboard-light.png)
 
 ---
@@ -124,9 +126,11 @@ collected feedback and name the surfaces behind each point.
 
 ## Deploy to Vercel
 
-The tool is **deploy-ready for Vercel** — at runtime it's just static HTML plus
-three lightweight endpoints reading committed JSON and calling Claude (the
-headless-browser collectors are dev-time only and never run in production).
+A live instance runs at
+**[nsave-feedback-intelligence.vercel.app](https://nsave-feedback-intelligence.vercel.app)**.
+At runtime the app is just static HTML plus three lightweight endpoints reading
+committed JSON and calling Claude (the headless-browser collectors are dev-time only
+and never run in production), which is why it deploys cleanly to Vercel.
 
 ```bash
 npm i -g vercel
